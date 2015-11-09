@@ -1,25 +1,21 @@
-'''
-Grabs SSL certificate details from a running SSL service
-'''
-
 import argparse, ssl, sys, OpenSSL
 
-parser = argparse.ArgumentParser(prog='get_ssl_cert', usage=sys.argv[0] + ' [options]')
-parser.add_argument('-i', "--hostname", type=str, help="hostname/ip of SSL service to query", required=True)
+desc = "Grabs SSL certificate details from a running SSL service"
+parser = argparse.ArgumentParser(prog='get_ssl_cert', usage=sys.argv[0] + ' [options]', description=desc)
+parser.add_argument('-i', "--hostname", type=str, help="Hostname/ip of SSL service to query", required=True)
 parser.add_argument('-p', "--port", type=int, help="Port of TCP/IP SSL service", required=False, default=443)
 args=parser.parse_args()
 
-
 # Formatting prep
 fldmap = (
-    'Attribute', 's',
-    'Value', 's',)
+	'Attribute', 's',
+	'Value', 's',)
 
 head = '\t\t\t'.join(fldmap[0:len(fldmap):2])
 fmt = '\t\t\t'.join(['{' + '{0}:{1}'.format(col,fmt) + '}' \
-    for col, fmt in zip( \
-        fldmap[0:len(fldmap):2], \
-        fldmap[1:len(fldmap):2])])
+	for col, fmt in zip( \
+		fldmap[0:len(fldmap):2], \
+		fldmap[1:len(fldmap):2])])
 
 # Grab the certificate
 cert = ssl.get_server_certificate((args.hostname, args.port))
