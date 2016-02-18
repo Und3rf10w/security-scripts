@@ -36,27 +36,31 @@ userip = urllib.urlencode(userip)
 
 
 while pageno <= int(noresults):
-	# Do Google Search
-	response = urllib.urlopen ( 'http://ajax.googleapis.com/ajax/services/search/web?v=1.0&rsz=8' + '&start=' + str(pageno) + '&' + userip + '&' + query ).read()
-	json = m_json.loads ( response )
-	results = json [ 'responseData' ] [ 'results' ]
-	pageno = pageno + 8
-	for result in results:
-		title = result['title']
-		url = result['url']
-		# Visit LinkedIn URL and grab job title
-		while True:
-			try:
-				headers = {'User-Agent': "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.71 Safari/537.36"}
-				req = urllib2.Request(url)
-				req.add_header('User-Agent', headers)
-				the_page = urllib2.build_opener()
-				bspage = bs(the_page.open(req).read())
-				formatted_jobtitle = bspage.p.string
-				break
-			except urllib2.HTTPError:
-				# if LinkedIn url is a 404, say couldn't determine
-				formatted_jobtitle = "Couldn't determine job title"
-				break
-		# output results
-		print  (title + '; ' + formatted_jobtitle + '; ' + url)
+	try:
+		# Do Google Search
+		response = urllib.urlopen ( 'http://ajax.googleapis.com/ajax/services/search/web?v=1.0&rsz=8' + '&start=' + str(pageno) + '&' + userip + '&' + query ).read()
+		json = m_json.loads ( response )
+		results = json [ 'responseData' ] [ 'results' ]
+		pageno = pageno + 8
+		for result in results:
+			title = result['title']
+			url = result['url']
+			# Visit LinkedIn URL and grab job title
+			while True:
+				try:
+					headers = {'User-Agent': "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.71 Safari/537.36"}
+					req = urllib2.Request(url)
+					req.add_header('User-Agent', headers)
+					the_page = urllib2.build_opener()
+					bspage = bs(the_page.open(req).read())
+					formatted_jobtitle = bspage.p.string
+					break
+				except urllib2.HTTPError:
+					# if LinkedIn url is a 404, say couldn't determine
+					formatted_jobtitle = "Couldn't determine job title"
+					break
+			# output results
+			print  (title + '; ' + formatted_jobtitle + '; ' + url)
+			pass
+	except TypeError:
+		break	
