@@ -21,7 +21,7 @@ orgname = argsdict['orgname']
 # if no orgname provided, grab here
 if orgname == None:
 	orgname = raw_input('Organization name: ')
-query = ({ 'q': 'site:linkedin.com inurl:pub -inurl:dir "at " ' + str(orgname) + ' \'Current\'' })
+query = ({ 'q': 'site:linkedin.com inurl:pub -inurl:dir "at " ' + '"' + str(orgname) + '"' + ' \'Current\'' })
 query = urllib.urlencode(query)
 pageno = 0
 # divide noresults by 8 for clean output
