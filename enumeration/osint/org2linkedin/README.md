@@ -36,4 +36,4 @@ optional arguments:
 ```
 
 # Issues
-Should any issues arise with this, please run the script with the -d flag, and provide any output in the comments of a new issue you open
+Should any issues arise with this, please run the script with the ```-d``` flag, and provide any output in the comments of a new issue you open through Github.
