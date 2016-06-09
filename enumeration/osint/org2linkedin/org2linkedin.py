@@ -70,16 +70,14 @@ exit()
 
 
 def main():
-	# Visit the Google APIs Console <http://code.google.com/apis/console>
-	# to get an API key for your applicatoin. Copy config.exmpl to config.txt and fill it out
-	service = build("customsearch", "v1", developerKey=DEVELOPER_KEY) #pull from config file, set config file to .gitignore, but make template
+	service = build("customsearch", "v1", developerKey=DEVELOPER_KEY)
 	counter = 1
 	while (counter < noresults):
 		if debug:
 			print "DEBUG: Is counter <= noresults?: ", (counter < noresults), " Counter: ", counter, " NoResults: ", noresults
 		res = service.cse().list(
 			q=query,
-			cx='CX_KEY', #pull from config file, set config file to .gitignore, but make template
+			cx='CX_KEY',
 			start=counter,
 			num=10,
 			lr="lang_en",
