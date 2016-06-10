@@ -97,8 +97,12 @@ else:
 def main():
 	if GOOGLE_FLAG == True:
 		searchGoogle()
+	else:
+		pass
 	if BING_FLAG == True:
 		searchBing()
+	else:
+		pass
 
 def searchGoogle():
 	service = build("customsearch", "v1", developerKey=G_DEVELOPER_KEY)
@@ -108,10 +112,10 @@ def searchGoogle():
 		   print "DEBUG: Is counter <= noresults?: ", (counter < noresults), " Counter: ", counter, " NoResults: ", noresults
 		res = service.cse().list(
 			q=query,
-			cx='G_CX_KEY',
+			cx=G_CX_KEY,
+			lr="lang_en",
 			start=counter,
 			num=10,
-			lr="lang_en",
 			).execute()
 		counter += 10
 		for item in res['items']:
