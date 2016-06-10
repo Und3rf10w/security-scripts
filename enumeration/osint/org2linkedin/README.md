@@ -1,10 +1,13 @@
 # Installation
 See [this page](https://developers.google.com/api-client-library/python/start/installation#system-requirements) for instructions on how to install the Google client library
 
-# Requirements
+# Google Search Requirements
 You need to create a Google Developer API Key. Register [here](https://console.developers.google.com/) and create a new project.
 
 You'll also need to create a Google Custom Search Engine. Register [here](https://cse.google.com/cse/all).
+
+# Bing Search Requirements
+You need to create a Bing Search API key. Register [here](https://datamarket.azure.com/dataset/bing/search).
 
 # Configuration
 Copy [config.exmpl.cfg](config.exmpl.cfg) to ```config.cfg```:
@@ -14,7 +17,9 @@ cp config.{exmpl,}.cfg
 ```
 
 Insert your Google Developer API key into ```config.cfg```, replacing ```<GOOGLE DEVELOPER KEY>``` with it.
-Finally, insert your Google Custom Search Engine key into ```config.cfg```, replacing ```<GOOGLE CUSTOM SEARCH ENGINE KEY>``` with it.
+Next, insert your Google Custom Search Engine key into ```config.cfg```, replacing ```<GOOGLE CUSTOM SEARCH ENGINE KEY>``` with it.
+
+Finally, insert your Bing Primary Account Key into ```config.cfg```, replacing ```<BING PRIMARY ACCOUNT KEY>``` with it.
 
 # Usage
 
