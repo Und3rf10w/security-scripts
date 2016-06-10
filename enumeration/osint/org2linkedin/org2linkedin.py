@@ -205,8 +205,6 @@ def searchBing():
 		except IndexError as e:
 			if verbose:
 				print "INFO: No additional Bing Search Results available"
-			if debug:
-				print e
 			break
 		except Exception as e:
 			print "Bing_ERROR: Something strange happened, printing error: "
