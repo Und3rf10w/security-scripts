@@ -21,39 +21,51 @@ echo -e "\nPlease wait, this next part can take a bit...\n"
 echo -e "Finding files by access\n"
 for ip in $(cat $access_log |cut -d " " -f 1 |sort | uniq -c |sort -urn | awk '{print $2}'); do cat $access_log| grep $ip |cut -d "\"" -f 2 |uniq -c; done |sort -u
 
-read -p "Provide what you wish to investiage further: " inv_menu;
-select inv_menu in "Specific Address" "Specific file accessed by specific ip address" "Exit"; do
+# read -p "Provide what you wish to investiage further: " inv_menu;
+echo "Provide what you wish to investiagate further: "
+options=("Specific Address" "Specific file accessed by specific ip address" "Exit")
+select inv_menu in "${options[@]}"; do
      case $inv_menu in
-         "Specific Address" ) read -p "Provide the IP address:" inv_address;
+         "Specific Address" ) read -p "Provide the IP address: " inv_address;
              echo -e "Pages accessed by $inv_address by count:\n";
-             cat $inv_address |grep "$inv_address" | cut -d "\"" -f 2 |uniq -c;; #&
-         "Specific file accessed by specific ip address" ) if [-z "$inv_address"];
+             cat $access_log |grep "$inv_address" | cut -d "\"" -f 2 |uniq -c;; #&
+         "Specific file accessed by specific ip address" ) if [ -z "$inv_address" ];
                 then
-                        echo "INFO: No IP address cached"
-                        read -p "Provide the IP address:" $inv_address;
+                        echo -e "INFO: No IP address cached\n";
+                        read -p "Provide the IP address: " inv_address;
                 else
-                        read -p "Want to use $inv_address as the IP address?" yn
+                        read -p "Want to use $inv_address as the IP address? (y/n)" yn
                         case $yn in
-                                [Yy]* ) break;;
-                                [Nn]* ) read -p "Provide the IP address:" $inv_address;;
+                                [Yy]* ) ;;
+                                [Nn]* ) read -p "Provide the IP address: " $inv_address;;
                                 * ) echo "Please answer yes or no." ;;
-			esac
+                        esac
                 fi
-                read -p "Provide the file name:" $http_file;
+                read -p "Provide all or part of the file name you want to see requests for: " http_file;
                 echo -e "Unique requests for $inv_address on $http_file\n";
-                cat $access_log | grep "$inv_address" | cut -d "\"" -f 2 | uniq -c;
-                echo -e "Number of response codes for $inv_address on $http_file\n";
-                cat $access_log | grep "$inv_address" | grep "$http_file" | sort -u | awk {'print $8'};
-                read -p "Provide response code to read from, else 'return'" inv_rescode
-                if [$inv_rescode == "return"]; then
-                        echo "INFO: Returning";; #&
-                elif [ $inv_rescode == Exit|exit|Quit|quit* ];
-                        exit 0;
+                if [[ $http_file == "" ]]; then
+                        echo -e "WARNING! No file name provided!"
                 else
-                        echo "$inv_rescode requests by $inv_address";
-                        cat $access_log |grep $inv_address|grep $http_file|grep $inv_rescode;; #&
-                fi
-         "Exit" ) echo "Exiting..."; exit 0;;
+                        cat $access_log | grep "$inv_address" | cut -d "\"" -f 2 | uniq -c;
+                        echo -e "Number of response codes for $inv_address on $http_file\n";
+                        cat $access_log | grep "$inv_address" | grep "$http_file" | sort -u | awk {'print $9'} | uniq -c;
+                        read -p "Provide response code to read from, else 'return' " inv_rescode;
+                                if [[ $inv_rescode == "return" ]]; then
+                                        echo "INFO: Returning"; #&
+                                elif [[ $inv_rescode == "Exit" || $inv_rescode == "exit" || $inv_rescode == "Quit" || $inv_rescode == "quit*" ]]; then
+                                        exit 0;
+                                else
+                                        if [[ ! -z "$inv_rescode" ]]; then
+                                                echo -e "$inv_rescode requests by $inv_address:\n";
+                                                cat $access_log |grep $inv_address |grep $http_file|grep $inv_rescode;
+                                        else
+                                                echo -e "All requests by $inv_address\n";
+                                                cat $access_log |grep $inv_address |grep $http_file;
+                                        fi
+                                fi
+                fi;;
+         "Exit" ) echo "Exiting...";
+                        exit 0;;
          *) echo "Select from the menu";; #&
      esac
 done
