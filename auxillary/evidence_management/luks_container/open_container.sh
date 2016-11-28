@@ -1,6 +1,12 @@
 #!/bin/bash
 # opens the luks container
 
+if [[ $EUID -ne 0 ]]; then
+	echo "This script must be run as root" 
+	exit 1
+fi
+
+
 if [[ $# -eq 0 ]]; then
 	echo "USAGE: $0 -f </path/to/container> -n <volume name to use>"
 	exit 0

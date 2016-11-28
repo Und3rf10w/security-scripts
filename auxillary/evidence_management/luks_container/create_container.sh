@@ -1,4 +1,10 @@
 #!/bin/bash
+
+if [[ $EUID -ne 0 ]]; then
+	echo "This script must be run as root" 
+	exit 1
+fi
+
 # Script will create the encrypted LUKS container, and format it with ext4
 read -p "What size should the container be in MB? (512): " container_size
 read -p "Where should we store the container? (/root/container): " container_path
