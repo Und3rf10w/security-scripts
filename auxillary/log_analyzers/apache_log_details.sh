@@ -22,7 +22,7 @@ echo -e "Finding files by access\n"
 for ip in $(cat $access_log |cut -d " " -f 1 |sort | uniq -c |sort -urn | awk '{print $2}'); do cat $access_log| grep $ip |cut -d "\"" -f 2 |uniq -c; done |sort -u
 
 # read -p "Provide what you wish to investiage further: " inv_menu;
-echo "Provide what you wish to investiagate further: "
+echo "Provide what you wish to investigate further: "
 options=("Specific Address" "Specific file accessed by specific ip address" "Exit")
 select inv_menu in "${options[@]}"; do
      case $inv_menu in
